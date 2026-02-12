@@ -1,78 +1,145 @@
-# geekhunter-docker-nodejsapp
+# docker-nodejs-express-app
 
-Exemplo de uma aplicação criada para ser distribuída utilizando Docker.
+Exemplo de aplicação Node.js com Express preparada para ser distribuída utilizando Docker.
 
-# Develop, Ship e Run
+Projeto demonstrando o conceito:
 
-Veja um exemplo de conteúdo de um Dockerfile:
+Develop • Ship • Run 🚀
 
-```FROM node:10-alpine
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-WORKDIR /home/node/app
-# Install app dependencies
-COPY package*.json ./
-USER node
-RUN npm install
-COPY --chown=node:node . .
-EXPOSE 8080
-CMD [ "node", "app.js" ]
-```
+---
 
-Se olharmos para o arquivo app.js que define uma aplicação básica em Node.js e express teremos:
+## 📌 Sobre o Projeto
 
-```
+Esta é uma aplicação simples em Node.js utilizando Express, containerizada com Docker.
+
+Ao acessar a aplicação no navegador, será exibida a mensagem:
+
+Geek Hunter!
+
+O foco principal deste projeto é demonstrar como criar, buildar e executar containers Docker.
+
+---
+
+## 🧱 Estrutura do Projeto
+
+- app.js
+- package.json
+- Dockerfile
+
+---
+
+## 📄 Código da Aplicação (app.js)
+
+```js
 const express = require('express');
 const app = express();
+
 app.get('/', function (req, res) {
-res.send('Geek Hunter!');
+  res.send('Geek Hunter!');
 });
+
 app.listen(3000, function () {
-	console.log('Servidor Geek Hunter rodando na porta 3000!');
-}); 
+  console.log('Servidor Geek Hunter rodando na porta 3000!');
+});
 ```
 
-Agora que já definimos nossa aplicação em app.js e já temos nosso Dockerfile, vamos criar uma imagem do Docker para poder rodar nossa aplicação e realizar o deploy na imagem que será carregada no container.
+## 🐳 Dockerfile
 
+Exemplo de Dockerfile utilizado no projeto:
 
-## Vamos criar uma imagem executando o comando:
+```FROM node:18-alpine
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
-```
-$ docker build -t vmoll/nodejs-image-demo .
-```
+WORKDIR /home/node/app
 
-A opção -t serve para informarmos uma tag para a imagem que estamos criando.
-Após a criação será possível rodar a aplicação, utilizando o seguinte comando:
+# Copia arquivos de dependências
+COPY package*.json ./
 
-```
-$ docker run -it -p 3000:3000 -h instance-hostname --rm --name nodejs-image-demo vmoll/nodejs-image-demo:latest
-```
+USER node
 
+# Instala dependências
+RUN npm install
 
-No comando que acabamos de executar informamos -p 3000:3000, responsável por realizar o bind ou vinculação da porta local para uma porta externa do serviço que será disponibilizado na máquina que está hospedando a aplicação que acabamos de criar e realizar o deploy.
+# Copia o restante da aplicação
+COPY --chown=node:node . .
 
-Veja como a aplicação está funcional e operante, acessando http://localhost:3000, e receberá a mensagem “Hello Geeks!”:
+EXPOSE 3000
 
-***Observação importante:*** criei aqui uma aplicação bem simples, apenas para demonstrar que é possível realizar o deploy na imagem Docker que criamos e nosso foco principal é a criação e execução de containers usando Docker. Caso queria criar uma aplicação completa, pode utilizar algum gerador como o express-generator. Para isso execute o seguintes comandos:
-
-```
-$ npm install express-generator -g
+CMD ["node", "app.js"]
 ```
 
-```
-$ express minhaAplicacao
+## 🚀 Build da Imagem Docker
+
+Para criar a imagem Docker, execute:
+
+```bash
+docker build -t docker-nodejs-express-app .
 ```
 
-```
-$ cd minhaAplicacao
+A opção -t define a tag da imagem.
+
+## ▶️ Executando o Container
+
+Após criar a imagem, execute:
+
+```bash
+docker run -it -p 3000:3000 --rm --name docker-nodejs-express-app docker-nodejs-express-app:latest
 ```
 
-```
-$ npm install
+## 🌐 Acessando a Aplicação
+
+Abra o navegador e acesse:
+
+```bash
+http://localhost:3000
 ```
 
-```
-$ npm start
+Você verá a mensagem:
+Geek Hunter!
+
+
+## ⚙️ Criando uma Aplicação Express Completa (Opcional)
+
+Caso deseje criar uma aplicação mais estruturada utilizando o express-generator:
+
+Instale o gerador globalmente:
+
+```bash
+npm install express-generator -g
 ```
 
-Após o que abra uma janela do browser em http://localhost:3000
+Crie uma nova aplicação:
 
+```bash
+express minhaAplicacao
+cd minhaAplicacao
+npm install
+npm start
+```
+
+Depois acesse:
+
+```bash
+http://localhost:3000
+```
+
+## 📚 Tecnologias Utilizadas
+
+* Node.js
+* Express
+* Docker
+
+## 🎯 Objetivo
+Demonstrar como:
+
+* Criar uma aplicação Node.js
+* Criar um Dockerfile
+* Gerar uma imagem Docker
+* Executar um container
+* Publicar uma aplicação containerizada
+
+## 👨‍💻 Autor
+
+Vinícius Belo
+
+---
